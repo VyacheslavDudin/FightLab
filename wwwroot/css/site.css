@@ -23,11 +23,13 @@ a {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
-
+.table td, .table th{
+    text-align:center;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {

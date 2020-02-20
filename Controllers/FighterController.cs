@@ -19,18 +19,73 @@ namespace WebApplication2.Controllers
         }
 
         // GET: Fighter
-        public async Task<IActionResult> Index(int? id, string? name)
+        public async Task<IActionResult> Index(string? command, int? id, string? name)
         {
-            if (id == null) return RedirectToAction("Division", "Index");
-            //Знаходження бійців за ваг.категор.
-            ViewBag.DivisionId = id;
-            ViewBag.DivisionName = name;
+            switch (command)
+            {
+                case "division":
+                    {
+                        if (id == null) return RedirectToAction("Division", "Index");
+                        //Знаходження бійців за ваг.категор.
+                        ViewBag.Id = id;
+                        ViewBag.Name = name;
+                        ViewBag.Parametr = "ваг.категор.";
+                        ViewBag.Command = "division";
+                        
 
-            var fightersByDivision = _context.Fighter.Where(f => f.DivisionId == id).Include(f => f.Division).Include(f => f.Status).Include(f => f.Country);
+                        var fightersByDivision = _context.Fighter.Where(f => f.DivisionId == id).Include(f => f.Division).Include(f => f.Status).Include(f => f.Country);
 
 
-            //var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
-            return View(await fightersByDivision.ToListAsync());
+                        //var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
+                        return View(await fightersByDivision.ToListAsync());
+                    }
+                case "country":
+                    {
+                        if (id == null) return RedirectToAction("Countries", "Index");
+                        //Знаходження бійців за country
+                        ViewBag.Id = id;
+                        ViewBag.Name = name;
+                        ViewBag.Parametr = "країною";
+                        ViewBag.Command = "country";
+
+                        var fightersByCountry = _context.Fighter.Where(f => f.CountryId == id).Include(f => f.Division).Include(f => f.Status).Include(f => f.Country);
+
+
+                        //var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
+                        return View(await fightersByCountry.ToListAsync());
+                    }
+                case "status":
+                    {
+                        if (id == null) return RedirectToAction("Status", "Index");
+                        //Знаходження бійців за status
+                        ViewBag.Id = id;
+                        ViewBag.Name = name;
+                        ViewBag.Parametr = "статусом";
+                        ViewBag.Command = "status";
+
+                        var fightersByStatus = _context.Fighter.Where(f => f.StatusId == id).Include(f => f.Division).Include(f => f.Status).Include(f => f.Country);
+
+
+                        //var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
+                        return View(await fightersByStatus.ToListAsync());
+                    }
+                case "fight":
+                    {
+                        var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
+                        return View(await fightContext.ToListAsync());
+                    }
+                case "title":
+                    {
+                        var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
+                        return View(await fightContext.ToListAsync());
+                    }
+                default:
+                    {
+                        var fightContext = _context.Fighter.Include(f => f.Country).Include(f => f.Division).Include(f => f.Status);
+                        return View(await fightContext.ToListAsync());
+                    }
+            }
+            
         }
 
         // GET: Fighter/Details/5
@@ -46,6 +101,7 @@ namespace WebApplication2.Controllers
                 .Include(f => f.Division)
                 .Include(f => f.Status)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (fighter == null)
             {
                 return NotFound();
@@ -55,8 +111,38 @@ namespace WebApplication2.Controllers
         }
 
         // GET: Fighter/Create
-        public IActionResult Create(int divisionId, string divisionName)
+        public IActionResult Create(string command, int id, string name)
         {
+            switch (command)
+            {
+                case "division":
+                    {
+                        ViewBag.Parametr = "ваг.кат";
+                        ViewBag.Id = id;
+                        ViewBag.Name = _context.Division.Where(d => d.Id == id).FirstOrDefaultAsync().Result.Name;
+                        break;
+                    }
+                case "country":
+                    {
+                        ViewBag.Parametr = "країни";
+                        ViewBag.Id = id;
+                        ViewBag.Name = _context.Country.Where(c => c.Id == id).FirstOrDefaultAsync().Result.Name;
+                        break;
+                    }
+                case "status":
+                    {
+                        ViewBag.Parametr = "статусу";
+                        ViewBag.Id = id;
+                        ViewBag.Name = _context.Status.Where(s => s.Id == id).FirstOrDefaultAsync().Result.Name;
+                        break;
+                    }
+           
+                default:
+                    {
+                        ViewBag.Parametr = "";
+                        break;
+                    }
+            }
             ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name");
             //ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name");
             ////ViewBag.DivisionId = divisionId;
@@ -71,8 +157,15 @@ namespace WebApplication2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int divisionId, [Bind("Id,DivisionId,DateOfBirth,CountryId,StatusId,Height,Weight,Debut,Name")] Fighter fighter)
+        public async Task<IActionResult> Create(string command, int divisionId, [Bind("Id,DivisionId,DateOfBirth,CountryId,StatusId,Height,Weight,Debut,Name")] Fighter fighter)
         {
+            //Console.WriteLine(ModelState["Division"].Errors);
+            //Console.WriteLine(ModelState["Height"].Errors);
+            //Console.WriteLine(ModelState["Id"].Errors);
+            //Console.WriteLine(ModelState["Weight"].Errors);
+            //Console.WriteLine(ModelState["Debut"].Errors);
+            //Console.WriteLine(ModelState["Status"].Errors);
+            //Console.WriteLine(ModelState["Country"].Errors);
             if (ModelState.IsValid)
             {
                 _context.Add(fighter);
@@ -118,7 +211,6 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try

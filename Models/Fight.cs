@@ -15,7 +15,9 @@ namespace WebApplication2
         [Display(Name = "Боєць 2")]
         public int Fighter2Id { get; set; }
         [Display(Name = "Переможець")]
+        [StringLength(40, MinimumLength = 3, ErrorMessage = "Введіть від 3 до 40 символів")]
         public string Winner { get; set; }
+        [StringLength(40, MinimumLength = 3, ErrorMessage = "Введіть від 3 до 40 символів")]
         [Display(Name = "Тип перемоги")]
         public string TypeOfWin { get; set; }
 

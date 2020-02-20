@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Юрий\\source\\repos\\WebApplication2\\WebApplication2.csproj": {}
+    "D:\\Програмування C++\\KNU_Studying\\2Course_2Semestr\\IStaTP\\FinalLab\\FightLab\\WebApplication2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Юрий\\source\\repos\\WebApplication2\\WebApplication2.csproj": {
+    "D:\\Програмування C++\\KNU_Studying\\2Course_2Semestr\\IStaTP\\FinalLab\\FightLab\\WebApplication2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Юрий\\source\\repos\\WebApplication2\\WebApplication2.csproj",
+        "projectUniqueName": "D:\\Програмування C++\\KNU_Studying\\2Course_2Semestr\\IStaTP\\FinalLab\\FightLab\\WebApplication2.csproj",
         "projectName": "WebApplication2",
-        "projectPath": "C:\\Users\\Юрий\\source\\repos\\WebApplication2\\WebApplication2.csproj",
+        "projectPath": "D:\\Програмування C++\\KNU_Studying\\2Course_2Semestr\\IStaTP\\FinalLab\\FightLab\\WebApplication2.csproj",
         "packagesPath": "C:\\Users\\Юрий\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Юрий\\source\\repos\\WebApplication2\\obj\\",
+        "outputPath": "D:\\Програмування C++\\KNU_Studying\\2Course_2Semestr\\IStaTP\\FinalLab\\FightLab\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Юрий\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -27,7 +27,7 @@ namespace WebApplication2
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-UM1S0IF;Database=Fight; Trusted_Connection=True;");
             }
         }
@@ -38,7 +38,7 @@ namespace WebApplication2
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -49,7 +49,7 @@ namespace WebApplication2
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Name).HasMaxLength(40);
             });
@@ -58,7 +58,7 @@ namespace WebApplication2
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Date).HasColumnType("date");
 
@@ -77,13 +77,13 @@ namespace WebApplication2
                 entity.HasOne(d => d.Fighter1)
                     .WithMany(p => p.FightFighter1)
                     .HasForeignKey(d => d.Fighter1Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Fight_Fighter");
 
                 entity.HasOne(d => d.Fighter2)
                     .WithMany(p => p.FightFighter2)
                     .HasForeignKey(d => d.Fighter2Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Fight_Fighter1");
             });
 
@@ -91,7 +91,7 @@ namespace WebApplication2
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
@@ -108,19 +108,19 @@ namespace WebApplication2
                 entity.HasOne(d => d.Country)
                     .WithMany(p => p.Fighter)
                     .HasForeignKey(d => d.CountryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Fighter_Country");
 
                 entity.HasOne(d => d.Division)
                     .WithMany(p => p.Fighter)
                     .HasForeignKey(d => d.DivisionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Fighter_Division");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Fighter)
                     .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Fighter_Status");
             });
 
@@ -128,7 +128,7 @@ namespace WebApplication2
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -139,7 +139,7 @@ namespace WebApplication2
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -162,13 +162,13 @@ namespace WebApplication2
                 entity.HasOne(d => d.Fighter)
                     .WithMany(p => p.TitleHolders)
                     .HasForeignKey(d => d.FighterId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_TitleHolders_Fighter");
 
                 entity.HasOne(d => d.Title)
                     .WithOne(p => p.TitleHolders)
                     .HasForeignKey<TitleHolders>(d => d.TitleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_TitleHolders_Title");
             });
 

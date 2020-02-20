@@ -1,30 +1,29 @@
 ﻿@model WebApplication2.Fighter
 
 @{
-    ViewData["Title"] = "Створити нового бійця";
+    ViewData["Title"] = "Додати нового бійця";
 }
 
-<h1>Додавання бійців вагової категорії @ViewData["DivisionId"]</h1>
+<h1>Додавання бійця @ViewBag.Parametr @ViewBag.Name</h1>
 
-<h4>Боєць</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
+                <input type="hidden" value="0" asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DivisionId" class="control-label"></label>
                 <select asp-for="DivisionId" class ="form-control" asp-items="ViewBag.DivisionId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CountryId" class="control-label"></label>
@@ -34,6 +33,12 @@
                 <label asp-for="StatusId" class="control-label"></label>
                 <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
             </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            
             <div class="form-group">
                 <label asp-for="Height" class="control-label"></label>
                 <input asp-for="Height" class="form-control" />
@@ -49,20 +54,16 @@
                 <input asp-for="Debut" class="form-control" />
                 <span asp-validation-for="Debut" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Створити" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад</a>
 </div>
 
 @section Scripts {

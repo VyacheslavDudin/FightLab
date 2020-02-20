@@ -1,29 +1,29 @@
 ﻿@model IEnumerable<WebApplication2.Fighter>
 
 @{
-    ViewData["Title"] = "Бійці за ваг.категорією";
+    @if (string.IsNullOrEmpty(@ViewBag.Parametr))
+    {
+        ViewData["Title"] = "Всі бійці";
+    }
+    else ViewData["Title"] = $"Бійці за  {@ViewBag.Parametr} {@ViewBag.Name}";
 }
 
-<h1>Бійці за категорією @ViewBag.DivisionName</h1>
+
+ @if (string.IsNullOrEmpty(@ViewBag.Parametr))
+    {
+        <h1>Всі бійці</h1>
+    }
+    else 
+    {
+        <h1>Бійці за @ViewBag.Parametr @ViewBag.Name</h1>
+    }
 
 <p>
-    @Html.ActionLink("Додати нового бійця", "Create", new { divisionId=@ViewBag.DivisionId})
+    @Html.ActionLink("Додати нового бійця", "Create", new {command=@ViewBag.Command, id = @ViewBag.Id})
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Height)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Weight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Debut)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -36,24 +36,25 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
+            <th>
+                Вік
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Debut)
+            </th>
+              
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Height)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Debut)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -66,6 +67,31 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Status.Name)
             </td>
+            <td>
+                @{
+                    int age = DateTime.Today.Year - ((DateTime)item.DateOfBirth).Year;
+                    @if(age==0)
+                    {
+                        <text>-</text>
+                    }
+                    else
+                    {
+                        <text>@age</text>
+                    }
+                    
+                }
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Debut)
+            </td>
+            
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Детальніше</a> |

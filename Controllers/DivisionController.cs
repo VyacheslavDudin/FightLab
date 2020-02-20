@@ -40,7 +40,7 @@ namespace WebApplication2.Controllers
             }
 
             //return View(division);
-            return RedirectToAction("Index", "Fighter", new { id = division.Id, name = division.Name });
+            return RedirectToAction("Index", "Fighter", new {command="division", id = division.Id, name = division.Name });
         }
 
         // GET: Division/Create
@@ -139,7 +139,7 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var division = await _context.Division.FindAsync(id);
+            var division = await _context.Division.Include(d=>d.Fighter).FirstOrDefaultAsync(d=>d.Id==id);
             _context.Division.Remove(division);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
