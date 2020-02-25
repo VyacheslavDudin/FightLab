@@ -111,13 +111,14 @@ namespace WebApplication2.Controllers
         }
 
         // GET: Fighter/Create
-        public IActionResult Create(string command, int id, string name)
+        public IActionResult Create(string command, int id, string name, string url)
         {
             switch (command)
             {
                 case "division":
                     {
                         ViewBag.Parametr = "ваг.кат";
+                        ViewBag.InputId = "DivisionId";
                         ViewBag.Id = id;
                         ViewBag.Name = _context.Division.Where(d => d.Id == id).FirstOrDefaultAsync().Result.Name;
                         break;
@@ -125,6 +126,7 @@ namespace WebApplication2.Controllers
                 case "country":
                     {
                         ViewBag.Parametr = "країни";
+                        ViewBag.InputId = "CountryId";
                         ViewBag.Id = id;
                         ViewBag.Name = _context.Country.Where(c => c.Id == id).FirstOrDefaultAsync().Result.Name;
                         break;
@@ -132,6 +134,7 @@ namespace WebApplication2.Controllers
                 case "status":
                     {
                         ViewBag.Parametr = "статусу";
+                        ViewBag.InputId = "StatusId";
                         ViewBag.Id = id;
                         ViewBag.Name = _context.Status.Where(s => s.Id == id).FirstOrDefaultAsync().Result.Name;
                         break;
@@ -149,6 +152,7 @@ namespace WebApplication2.Controllers
             ////ViewBag.DivisionName = divisionName;
             ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name");
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
+            ViewBag.url = url;
             return View();
         }
 
@@ -159,13 +163,6 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string command, int divisionId, [Bind("Id,DivisionId,DateOfBirth,CountryId,StatusId,Height,Weight,Debut,Name")] Fighter fighter)
         {
-            //Console.WriteLine(ModelState["Division"].Errors);
-            //Console.WriteLine(ModelState["Height"].Errors);
-            //Console.WriteLine(ModelState["Id"].Errors);
-            //Console.WriteLine(ModelState["Weight"].Errors);
-            //Console.WriteLine(ModelState["Debut"].Errors);
-            //Console.WriteLine(ModelState["Status"].Errors);
-            //Console.WriteLine(ModelState["Country"].Errors);
             if (ModelState.IsValid)
             {
                 _context.Add(fighter);

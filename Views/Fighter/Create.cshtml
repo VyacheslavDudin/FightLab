@@ -57,15 +57,23 @@
            
             <div class="form-group">
                 <input type="submit" value="Створити" class="btn btn-primary" />
+                <a class="back" href=@ViewBag.url>Назад</a>  
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Назад</a>
-</div>
-
 @section Scripts {
+    <script>document.querySelector(".back").href=sessionStorage.getItem('url');sessionStorage.removeItem('url')</script>
+    @{
+    <script>
+        let input=@ViewBag.InputId;
+        input.querySelectorAll("option").forEach((item)=>{
+            if(+(item.value)==@ViewBag.Id) 
+                item.selected=true;
+            });
+    
+    </script>
+    }
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

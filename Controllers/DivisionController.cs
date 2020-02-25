@@ -78,6 +78,7 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Division = division.Name;
             return View(division);
         }
 
@@ -126,6 +127,8 @@ namespace WebApplication2.Controllers
 
             var division = await _context.Division
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewBag.Division = division.Name;
             if (division == null)
             {
                 return NotFound();

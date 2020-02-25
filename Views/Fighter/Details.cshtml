@@ -64,5 +64,10 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
-    <a asp-action="Index">Назад</a>
+   <a class="back" href=@ViewBag.url>Назад</a>  
 </div>
+
+@section Scripts {
+    <script>document.querySelector(".back").href=sessionStorage.getItem('url');sessionStorage.removeItem('url')</script>
+}
+

@@ -6,7 +6,7 @@
 
 <h1>Вагові категорії</h1>
 
-<p>
+<p class="addNew">
     <a asp-action="Create">Додати ваг.категорію</a>
 </p>
 <table class="table">
@@ -19,7 +19,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

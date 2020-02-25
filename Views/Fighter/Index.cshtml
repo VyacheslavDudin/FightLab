@@ -18,86 +18,142 @@
         <h1>Бійці за @ViewBag.Parametr @ViewBag.Name</h1>
     }
 
-<p>
-    @Html.ActionLink("Додати нового бійця", "Create", new {command=@ViewBag.Command, id = @ViewBag.Id})
+<p class="addNew">
+    @{
+
+    //@Html.ActionLink("Додати нового бійця", "Create", new {command=@ViewBag.Command, id = @ViewBag.Id, url="${window.location}"})
+    <a class="back" asp-action="Create" asp-route-command="@ViewBag.Command" asp-route-id="@ViewBag.Id"> Додати нового бійця</a>    
+    }
+    <script>sessionStorage.setItem('url', window.location); </script>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Division)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                Вік
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Height)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Weight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Debut)
-            </th>
+
+@{
+    var counter=0;
+    @foreach (var item in Model) 
+    {
+        counter++;
+    }
+    @if(counter==0)
+    {
+        <h1>NO FIGHTERS HERE</h1>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Country)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Division)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        Вік
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Height)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Weight)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Debut)
+                    </th>
               
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Division.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status.Name)
-            </td>
-            <td>
-                @{
-                    int age = DateTime.Today.Year - ((DateTime)item.DateOfBirth).Year;
-                    @if(age==0)
-                    {
-                        <text>-</text>
-                    }
-                    else
-                    {
-                        <text>@age</text>
-                    }
-                    
-                }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model) 
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Division.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status.Name)
+                    </td>
+                    <td>
+                        @{
+                            @if(item.DateOfBirth==null )
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                                int age = DateTime.Today.Year - ((DateTime)item.DateOfBirth).Year;
+                                @if(age==0)
+                                {
+                                    <text>-</text>
+                                }
+                                else
+                                {
+                                    <text>@age</text>
+                                }
+                            }
+                      
+                        }
                 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Height)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Debut)
-            </td>
+                    </td>
+                    <td>
+                        @{
+                            @if(item.Height==null )
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                               @Html.DisplayFor(modelItem => item.Height)
+                            } 
+                        }                
+                    </td>
+                    <td>
+                        @{
+                            @if(item.Weight==null )
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                               @Html.DisplayFor(modelItem => item.Weight)
+                            } 
+                        }       
+                    </td>
+                    <td>
+                        @{
+                            @if(item.Debut==null )
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                               @Html.DisplayFor(modelItem => item.Debut)
+                            } 
+                        }       
+                    </td>
             
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Детальніше</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
-            </td>
-        </tr>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Детальніше</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    }
 }
-    </tbody>
-</table>
+
