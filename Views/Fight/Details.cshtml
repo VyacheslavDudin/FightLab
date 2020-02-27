@@ -4,22 +4,44 @@
     ViewData["Title"] = "Детально про бій";
 }
 
-<h1>Деталі бою</h1>
+<h1>Детальна інформація про бій</h1>
 
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fighter1)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
+            @Html.DisplayFor(model => model.Fighter1.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Winner)
+            @Html.DisplayNameFor(model => model.Fighter2)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Winner)
+            @Html.DisplayFor(model => model.Fighter2.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @if(Model.Winner=="Fighter1"||Model.Winner=="Fighter2")
+            {
+                <text>Переможець</text>
+            }
+            else{@Html.DisplayNameFor(model => model.Winner)}
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                
+                @if(Model.Winner=="Fighter1")
+                {
+                     @Html.DisplayFor(model => model.Fighter1.Name)
+                }
+                else if(Model.Winner=="Fighter2")
+                {
+                     @Html.DisplayFor(model => model.Fighter2.Name)
+                }
+                else{@Html.DisplayFor(model => model.Winner)}
+            }
+            
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.TypeOfWin)
@@ -28,20 +50,27 @@
             @Html.DisplayFor(model => model.TypeOfWin)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fighter1)
+            @Html.DisplayNameFor(model => model.Date)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fighter1.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fighter2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fighter2.Id)
-        </dd>
+        @{
+            @if(Model.Date==null )
+                {
+                    <text>-</text>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Date)
+                }        
+        }
+        </dd>  
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
-    <a asp-action="Index">Назад</a>
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a>
+    <a class="btn btn-outline-secondary ml-2 back" href=@ViewBag.url>Назад</a>
 </div>
+
+@section Scripts {
+    <script>document.querySelector(".back").href=sessionStorage.getItem('url');sessionStorage.removeItem('url')</script>
+}

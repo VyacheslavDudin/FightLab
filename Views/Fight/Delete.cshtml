@@ -6,46 +6,83 @@
 
 <h1>Видалити бій</h1>
 
-<h3>Ви дійсно хочете видалити бій?</h3>
+<h3>Ви дійсно хочете видалити цей бій?</h3>
 <div>
-    <h4>Fight</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Winner)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Winner)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TypeOfWin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TypeOfWin)
-        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fighter1)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fighter1.Id)
+            @Html.DisplayFor(model => model.Fighter1.Name)
         </dd class>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fighter2)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fighter2.Id)
-        </dd class>
+            @Html.DisplayFor(model => model.Fighter2.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @if(Model.Winner=="Fighter1"||Model.Winner=="Fighter2")
+            {
+                <text>Переможець</text>
+            }
+            else{@Html.DisplayNameFor(model => model.Winner)}
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                
+                @if(Model.Winner=="Fighter1")
+                {
+                     @Html.DisplayFor(model => model.Fighter1.Name)
+                }
+                else if(Model.Winner=="Fighter2")
+                {
+                     @Html.DisplayFor(model => model.Fighter2.Name)
+                }
+                else{@Html.DisplayFor(model => model.Winner)}
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TypeOfWin)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+            @if(Model.TypeOfWin==null )
+                {
+                    <text>-</text>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.TypeOfWin)
+                }        
+        }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+            @if(Model.Date==null )
+                {
+                    <text>-</text>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Date)
+                }        
+        }
+        </dd>
+        
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Видалити" class="btn btn-danger" /> |
-        <a asp-action="Index">Назад</a>
+        <input type="submit" value="Видалити" class="btn btn-danger" />
+        <a class="btn btn-outline-secondary ml-2 back" href=@ViewBag.url>Назад</a>
     </form>
 </div>
+
+@section Scripts {
+    <script>document.querySelector(".back").href=sessionStorage.getItem('url');sessionStorage.removeItem('url')</script>
+}

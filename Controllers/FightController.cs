@@ -48,8 +48,8 @@ namespace WebApplication2.Controllers
         // GET: Fight/Create
         public IActionResult Create()
         {
-            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Id");
-            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Id");
+            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name");
+            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name");
             return View();
         }
 
@@ -62,12 +62,19 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (fight.Fighter1Id == fight.Fighter2Id)
+                {
+                    ModelState.AddModelError("Fighter2Id", "Неможливо додати бій бійця проти себе!");
+                    ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+                    ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
+                    return View(fight);
+                }
                 _context.Add(fight);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Id", fight.Fighter1Id);
-            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Id", fight.Fighter2Id);
+            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
             return View(fight);
         }
 
@@ -84,8 +91,8 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
-            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Id", fight.Fighter1Id);
-            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Id", fight.Fighter2Id);
+            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
             return View(fight);
         }
 
@@ -105,6 +112,13 @@ namespace WebApplication2.Controllers
             {
                 try
                 {
+                    if (fight.Fighter1Id == fight.Fighter2Id)
+                    {
+                        ModelState.AddModelError("Fighter2Id", "Неможливо додати бій бійця проти себе!");
+                        ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+                        ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
+                        return View(fight);
+                    }
                     _context.Update(fight);
                     await _context.SaveChangesAsync();
                 }
@@ -121,8 +135,8 @@ namespace WebApplication2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Id", fight.Fighter1Id);
-            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Id", fight.Fighter2Id);
+            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
             return View(fight);
         }
 

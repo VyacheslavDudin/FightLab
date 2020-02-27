@@ -21,7 +21,6 @@
 <p class="addNew">
     @{
 
-    //@Html.ActionLink("Додати нового бійця", "Create", new {command=@ViewBag.Command, id = @ViewBag.Id, url="${window.location}"})
     <a class="back" asp-action="Create" asp-route-command="@ViewBag.Command" asp-route-id="@ViewBag.Id"> Додати нового бійця</a>    
     }
     <script>sessionStorage.setItem('url', window.location); </script>

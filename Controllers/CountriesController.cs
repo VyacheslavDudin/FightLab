@@ -58,6 +58,12 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_context.Country.Where(c => c.Name == country.Name).Count() != 0)
+                {
+                    ModelState.AddModelError("Name", "Країна з такою назвою вже існує");
+                    return View(country);
+                }
+
                 _context.Add(country);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,6 +101,13 @@ namespace WebApplication2.Controllers
 
             if (ModelState.IsValid)
             {
+
+                if (_context.Country.Where(c => c.Name == country.Name && c.Id != id).Count() != 0)
+                {
+                    ModelState.AddModelError("Name", "Країна з такою назвою вже існує");
+                    return View(country);
+                }
+
                 try
                 {
                     _context.Update(country);
@@ -140,6 +153,11 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var country = await _context.Country.Include(c => c.Fighter).FirstOrDefaultAsync(c => c.Id == id);
+            if (_context.Country.Count() == 1)
+            {
+                ModelState.AddModelError("Name", "Неможливо видалити всі країни. Додайте принаймні ще одну і спробуйте ще раз.");
+                return View(country);
+            }
             _context.Country.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

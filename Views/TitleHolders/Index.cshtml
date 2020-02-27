@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WebApplication2.TitleHolders>
+
+@{
+    ViewData["Title"] = "Титули";
+}
+
+<h1>Всі титули</h1>
+
+<p>
+    <a class="addNew" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fighter)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                
+                @Html.DisplayFor(modelItem => item.Title.Name)
+            </td>
+            <td>
+            @{
+                @if(item.Fighter==null)
+                {
+                    <text>-</text>
+                }
+                else{@Html.DisplayFor(modelItem => item.Fighter.Name)}
+            }
+                
+            </td>
+            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TitleId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TitleId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TitleId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -58,6 +58,12 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_context.Status.Where(s => s.Name == status.Name).Count() != 0)
+                {
+                    ModelState.AddModelError("Name", "Такий статус вже існує!");
+                    return View(status);
+                }
+
                 _context.Add(status);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +103,12 @@ namespace WebApplication2.Controllers
             {
                 try
                 {
+                    if (_context.Status.Where(s => s.Name == status.Name && s.Id != id).Count() != 0)
+                    {
+                        ModelState.AddModelError("Name", "Такий статус вже існує!");
+                        return View(status);
+                    }
+
                     _context.Update(status);
                     await _context.SaveChangesAsync();
                 }
@@ -140,6 +152,11 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var status = await _context.Status.Include(s => s.Fighter).FirstOrDefaultAsync(s => s.Id == id);
+            if (_context.Status.Count() == 1)
+            {
+                ModelState.AddModelError("Name", "Неможливо видалити всі статуси. Додайте принаймні ще один і спробуйте ще раз.");
+                return View(status);
+            }
             _context.Status.Remove(status);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

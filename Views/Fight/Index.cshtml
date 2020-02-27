@@ -6,47 +6,67 @@
 
 <h1>Всі бої</h1>
 
-<p>
+<p class="addNew">
     <a asp-action="Create">Додати бій</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Winner)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TypeOfWin)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Fighter1)
             </th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Fighter2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr> 
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                <span style="position:relative;"> @item.Fighter1.Name
+                @{
+                    @if(item.Winner=="Fighter1")
+                    {
+                        <span class="winner">WIN</span>
+                    }
+                    else if(item.Winner=="draw")
+                    {
+                        <span class="draw">draw</span>
+                    }
+                 }
+                 </span>
             </td>
+            <td style="color:orangered;">VS</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Winner)
+               <span style="position:relative;"> @item.Fighter2.Name
+                @{
+                    @if(item.Winner=="Fighter2")
+                    {
+                        <span class="winner">WIN</span>
+                    }
+                    else if(item.Winner=="draw")
+                    {
+                        <span class="draw">draw</span>
+                    }
+                 }
+                 </span>
             </td>
+        
             <td>
-                @Html.DisplayFor(modelItem => item.TypeOfWin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fighter1.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fighter2.Id)
+                @if(item.Date==null )
+                {
+                    <text>-</text>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Date)
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
@@ -57,3 +77,4 @@
 }
     </tbody>
 </table>
+    <script>sessionStorage.setItem('url', window.location); </script>

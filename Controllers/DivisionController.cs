@@ -5,7 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Routing;
 using WebApplication2;
+using Controller = Microsoft.AspNetCore.Mvc.Controller;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using ValidateAntiForgeryTokenAttribute = Microsoft.AspNetCore.Mvc.ValidateAntiForgeryTokenAttribute;
+using BindAttribute = Microsoft.AspNetCore.Mvc.BindAttribute;
+using ActionNameAttribute = Microsoft.AspNetCore.Mvc.ActionNameAttribute;
 
 namespace WebApplication2.Controllers
 {
@@ -58,6 +66,12 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_context.Division.Where(d => d.Name == division.Name).Count() != 0)
+                {
+                    ModelState.AddModelError("Name", "Вагова категорія з такою назвою вже існує");
+                    return View(division);
+                }
+                
                 _context.Add(division);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -98,6 +112,12 @@ namespace WebApplication2.Controllers
             {
                 try
                 {
+                    if (_context.Division.Where(d => d.Name == division.Name && d.Id!=id).Count() != 0)
+                    {
+                        ModelState.AddModelError("Name", "Вагова категорія з такою назвою вже існує");
+                        return View(division);
+                    }
+
                     _context.Update(division);
                     await _context.SaveChangesAsync();
                 }
@@ -143,6 +163,11 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var division = await _context.Division.Include(d=>d.Fighter).FirstOrDefaultAsync(d=>d.Id==id);
+            if (_context.Division.Count() == 1)
+            {
+                ModelState.AddModelError("Name", "Неможливо видалити всі вагові категорії. Додайте принаймні ще одну і спробуйте ще раз.");
+                return View(division);
+            }
             _context.Division.Remove(division);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
