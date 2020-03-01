@@ -1,41 +1,87 @@
 ﻿@model WebApplication2.TitleHolders
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Додати титул";
 }
 
-<h1>Create</h1>
+<h1>Додати титул</h1>
 
-<h4>TitleHolders</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="grid-create">
+        <form class="grid-form-3" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             <div class="form-group">
+                <label asp-for="@Model.Title.Name" for='TitleName' class="control-label"></label>
+                <input asp-for="@Model.Title.Name" class="form-control" name="TitleName" id="TitleName" asp-route="TitleName"/>
+                <span asp-validation-for="@Model.Title.Name" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="FighterId" class="control-label"></label>
-                <select asp-for="FighterId" class ="form-control" asp-items="ViewBag.FighterId"></select>
+                <select asp-for="FighterId" class ="form-control" asp-items="ViewBag.FighterId">
+                    <option value="0" selected>-</option>
+                </select>
             </div>
-            <div class="form-group">
-                <label asp-for="TitleId" class="control-label"></label>
-                <select asp-for="TitleId" class ="form-control" asp-items="ViewBag.TitleId"></select>
-            </div>
+            
+            
             <div class="form-group">
                 <label asp-for="DateOfGettingTitle" class="control-label"></label>
                 <input asp-for="DateOfGettingTitle" class="form-control" />
                 <span asp-validation-for="DateOfGettingTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input asp-for="TitleId" class ="form-control" type="hidden" value="0"></select>
+            </div>
+            <div class="form-group submit">
+                <input type="submit" value="Додати" class="btn btn-primary btn-bigger" />
+                <a class="btn btn-outline-secondary ml-2 btn-bigger" asp-action="Index">Назад</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const thExistinpt=document.getElementById("titleHolderExist");
+        if(!thExistinpt==null){
+            const fighterSelect=document.getElementById("FighterId");
+
+            thExistinpt.addEventListener("change", function(){
+                if(thExistinpt.checked){
+                    fighterSelect.disabled=true;
+                }
+                else {
+                    fighterSelect.disabled=false;
+                }
+            });
+        }
+    </script>
+    <script>
+        const tHolder = document.querySelector('#FighterId');
+        const dateGetting = document.querySelector('#DateOfGettingTitle');
+        if(tHolder.value=="0"){
+                dateGetting.value="";
+                dateGetting.disabled=true;
+                dateGetting.style.opacity=0.9;
+            }
+            else{
+                dateGetting.disabled=false;
+                dateGetting.style.opacity=1;
+            }
+        
+        tHolder.addEventListener('change', ()=> {
+            debugger;
+            if(tHolder.value=="0"){
+                console.log(dateGetting, dateGetting.value);
+                dateGetting.value="";
+                dateGetting.style.opacity=0.9;
+                dateGetting.disabled=true;
+            }
+            else{
+                dateGetting.disabled=false;
+                dateGetting.style.opacity=1;
+            }
+        });
+    </script>
 }

@@ -38,7 +38,7 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.FightersCount = _context.Fighter.Where(f => f.StatusId == id).ToArray().Count();
             //return View(status);
             return RedirectToAction("Index", "Fighter", new { command = "status", id = status.Id, name = status.Name });
         }
@@ -138,6 +138,8 @@ namespace WebApplication2.Controllers
 
             var status = await _context.Status
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.Status = status.Name;
+            ViewBag.FightersCount = _context.Fighter.Where(f => f.StatusId == id).ToArray().Count();
             if (status == null)
             {
                 return NotFound();

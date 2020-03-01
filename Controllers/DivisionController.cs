@@ -148,6 +148,8 @@ namespace WebApplication2.Controllers
             var division = await _context.Division
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            ViewBag.FigtersCount = 0;
+            ViewBag.FightersCount = _context.Fighter.Where(f => f.DivisionId == id).ToArray().Count();
             ViewBag.Division = division.Name;
             if (division == null)
             {

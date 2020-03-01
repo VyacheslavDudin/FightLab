@@ -142,6 +142,8 @@ namespace WebApplication2.Controllers
            
                 default:
                     {
+                        ViewBag.InputId = "DivisionId";
+                        ViewBag.Id = id;
                         ViewBag.Parametr = "";
                         break;
                     }
@@ -165,6 +167,83 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (fighter.DateOfBirth != null)
+                {
+                    int valid1 = DateTime.Today.Year - ((DateTime)(fighter.DateOfBirth)).Year;
+                    bool fightValid = true;
+                    bool titleValid = true;
+
+                    if (fighter.Debut == null)
+                    {
+                        fightValid = _context.Fight.Where(f => f.Fighter1Id == fighter.Id || f.Fighter2Id == fighter.Id).All(f => f.Date == null || DateTime.Compare((DateTime)(f.Date), ((DateTime)fighter.DateOfBirth).AddYears(18)) > 0);
+                        titleValid = _context.TitleHolders.Where(th => th.FighterId == fighter.Id).All(t => t.DateOfGettingTitle == null || DateTime.Compare((DateTime)(t.DateOfGettingTitle), ((DateTime)fighter.DateOfBirth).AddYears(18)) > 0);
+                    }
+                    if ((valid1 < 18 || valid1 > 200))
+                    {
+                        ModelState.AddModelError("DateOfBirth", "Занадто малий вік бійця! Введіть коректні дані");
+                        ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                        ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                        ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                        return View(fighter);
+                    }
+                    else if (!fightValid)
+                    {
+                        ModelState.AddModelError("DateOfBirth", "Існує бій який відбувався до 18 років!");
+                    }
+                    else if (!titleValid)
+                    {
+                        ModelState.AddModelError("DateOfBirth", "Боєць не міг отримати титул до 18 років!");
+                    }
+                    ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                    ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                    ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                    return View(fighter);
+                }
+
+                if (fighter.Debut != null)
+                {
+                    if (fighter.DateOfBirth != null)
+                    {
+                        int valid = ((DateTime)(fighter.Debut)).Year - ((DateTime)(fighter.DateOfBirth)).Year;
+                        if (valid < 18 || valid > 60 || DateTime.Compare((DateTime)(fighter.Debut), DateTime.Now) > 0)
+                        {
+                            ModelState.AddModelError("Debut", "Недостовірна дата дебюту! Введіть коректні дані");
+                            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                            ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                            return View(fighter);
+                        }
+                    }
+                    else
+                    {
+
+                        if (DateTime.Compare((DateTime)(fighter.Debut), DateTime.Now) > 0)
+                        {
+                            ModelState.AddModelError("Debut", "Недостовірна дата дебюту! Введіть коректні дані");
+                            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                            ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                            return View(fighter);
+                        }
+                    }
+                    if (_context.Fight.Where(f => f.Fighter1Id == fighter.Id || f.Fighter2Id == fighter.Id).All(f => f.Date == null || DateTime.Compare((DateTime)(f.Date), (DateTime)fighter.Debut) > 0))
+                    {
+                        ModelState.AddModelError("Debut", "Існує бій раніше дати дебюту");
+                        ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                        ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                        ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                        return View(fighter);
+                    }
+                    if (_context.TitleHolders.Where(th => th.FighterId == fighter.Id).All(th => th.DateOfGettingTitle == null || DateTime.Compare((DateTime)(th.DateOfGettingTitle), (DateTime)fighter.Debut) > 0))
+                    {
+                        ModelState.AddModelError("Debut", "Існує отримання титулу раніше дати дебюту");
+                        ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                        ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                        ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                        return View(fighter);
+                    }
+                }
+
                 _context.Add(fighter);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
@@ -174,8 +253,7 @@ namespace WebApplication2.Controllers
             ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
             return View(fighter);*/
-            return RedirectToAction("Index", "Fighter", new { id = divisionId, countryId = _context.Country.Where(c => c.Id == fighter.CountryId).FirstOrDefault().Name, 
-                statusId = _context.Status.Where(s => s.Id == fighter.StatusId).FirstOrDefault().Name });
+            return View(fighter);
         }
 
         // GET: Fighter/Edit/5
@@ -212,6 +290,83 @@ namespace WebApplication2.Controllers
             {
                 try
                 {
+                    if (fighter.DateOfBirth != null)
+                    {
+                        int valid1 = DateTime.Today.Year - ((DateTime)(fighter.DateOfBirth)).Year;
+                        bool fightValid = true;
+                        bool titleValid = true;
+
+                        if(fighter.Debut == null)
+                        {
+                            fightValid = _context.Fight.Where(f => f.Fighter1Id == id || f.Fighter2Id == id).All(f => f.Date == null || DateTime.Compare((DateTime)(f.Date), ((DateTime)fighter.DateOfBirth).AddYears(18)) > 0);
+                            titleValid = _context.TitleHolders.Where(th => th.FighterId == id).All(t => t.DateOfGettingTitle == null || DateTime.Compare((DateTime)(t.DateOfGettingTitle), ((DateTime)fighter.DateOfBirth).AddYears(18)) > 0);
+                        }
+                        if ((valid1 < 18 || valid1 > 200))
+                        {
+                            ModelState.AddModelError("DateOfBirth", "Занадто малий вік бійця! Введіть коректні дані");
+                            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                            ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                            return View(fighter);
+                        }
+                        else if (!fightValid)
+                        {
+                            ModelState.AddModelError("DateOfBirth", "Існує бій який відбувався до 18 років!");
+                        }
+                        else if (!titleValid)
+                        {
+                            ModelState.AddModelError("DateOfBirth", "Боєць не міг отримати титул до 18 років!");
+                        }
+                        ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                        ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                        ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                        return View(fighter);
+                    }
+
+                    if (fighter.Debut != null)
+                    {
+                        if (fighter.DateOfBirth != null)
+                        {
+                            int valid = ((DateTime)(fighter.Debut)).Year - ((DateTime)(fighter.DateOfBirth)).Year;
+                            if (valid < 18 || valid > 60 || DateTime.Compare((DateTime)(fighter.Debut), DateTime.Now) > 0)
+                            {
+                                ModelState.AddModelError("Debut", "Недостовірна дата дебюту! Введіть коректні дані");
+                                ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                                ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                                ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                                return View(fighter);
+                            }
+                        }
+                        else
+                        {
+
+                            if (DateTime.Compare((DateTime)(fighter.Debut), DateTime.Now) > 0)
+                            {
+                                ModelState.AddModelError("Debut", "Недостовірна дата дебюту! Введіть коректні дані");
+                                ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                                ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                                ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                                return View(fighter);
+                            }
+                        }
+                        if (_context.Fight.Where(f => f.Fighter1Id == id || f.Fighter2Id==id).All( f=>f.Date==null || DateTime.Compare((DateTime)(f.Date), (DateTime)fighter.Debut) > 0))
+                        {
+                            ModelState.AddModelError("Debut", "Існує бій раніше дати дебюту");
+                            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                            ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                            return View(fighter);
+                        }
+                        if (_context.TitleHolders.Where(th => th.FighterId == id).All(th => th.DateOfGettingTitle == null || DateTime.Compare((DateTime)(th.DateOfGettingTitle), (DateTime)fighter.Debut) > 0))
+                        {
+                            ModelState.AddModelError("Debut", "Існує отримання титулу раніше дати дебюту");
+                            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", fighter.CountryId);
+                            ViewData["DivisionId"] = new SelectList(_context.Division, "Id", "Name", fighter.DivisionId);
+                            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", fighter.StatusId);
+                            return View(fighter);
+                        }
+                    }
+
                     _context.Update(fighter);
                     await _context.SaveChangesAsync();
                 }

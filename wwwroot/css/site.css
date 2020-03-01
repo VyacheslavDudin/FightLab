@@ -16,6 +16,8 @@ h1{
     text-align:center;
 }
 
+/* Custom user styles
+-------------------------------------------------- */
 .addNew{
     text-align:center;
     margin-top:-8px;
@@ -44,11 +46,58 @@ h1{
     font-weight: 600;
 }
 
+div[dir="ltr"]{
+    margin:0 auto;
+    color:aqua;
+}
+rect {
+    fill: #2B3E50;
+}
+g text{
+    fill: #FFF;
+}
+g[clip-path] > g rect{
+    fill:gold;
+}
+.google-visualization-tooltip{
+    display:none;
+}
+
+.grid-create {
+    width: 80%;
+    margin: auto;
+}
+.grid-form {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 40px;
+}
+
+.grid-form-3 {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 20px;
+}
+.submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-top: 10px;
+}
+
+.btn-bigger{
+    font-size:18px;
+    width: 90px;
+}
+/*-------------------------------------------------- */
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {

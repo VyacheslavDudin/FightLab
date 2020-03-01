@@ -8,8 +8,8 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="grid-create">
+        <form asp-action="Create" class="grid-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
              <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -17,27 +17,25 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group d-none">
                 <input type="hidden" value="0" asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DivisionId" class="control-label"></label>
-                <select asp-for="DivisionId" class ="form-control" asp-items="ViewBag.DivisionId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CountryId" class="control-label"></label>
                 <select asp-for="CountryId" class ="form-control" asp-items="ViewBag.CountryId"></select>
             </div>
+
+            <div class="form-group">
+                <label asp-for="DivisionId" class="control-label"></label>
+                <select asp-for="DivisionId" class ="form-control" asp-items="ViewBag.DivisionId"></select>
+            </div>
+            
             <div class="form-group">
                 <label asp-for="StatusId" class="control-label"></label>
                 <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
+            
             
             <div class="form-group">
                 <label asp-for="Height" class="control-label"></label>
@@ -50,6 +48,11 @@
                 <span asp-validation-for="Weight" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Debut" class="control-label"></label>
                 <input asp-for="Debut" class="form-control" />
                 <span asp-validation-for="Debut" class="text-danger"></span>
@@ -57,23 +60,12 @@
            
             <div class="form-group">
                 <input type="submit" value="Створити" class="btn btn-primary"/>
-                <a class="btn btn-outline-secondary ml-2 back" asp-action="Index">Назад</a> 
+                <a class="btn btn-outline-secondary ml-2 " asp-action="Index">Назад</a> 
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <script>document.querySelector(".back").href=sessionStorage.getItem('url');sessionStorage.removeItem('url')</script>
-    @{
-    <script>
-        let input=@ViewBag.InputId;
-        input.querySelectorAll("option").forEach((item)=>{
-            if(+(item.value)==@ViewBag.Id) 
-                item.selected=true;
-            });
-    
-    </script>
-    }
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+       @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -69,6 +69,57 @@ namespace WebApplication2.Controllers
                     ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
                     return View(fight);
                 }
+
+                var fighter1 = _context.Fighter.Where(f => f.Id == fight.Fighter1Id).FirstOrDefaultAsync().Result;
+                var fighter2 = _context.Fighter.Where(f => f.Id == fight.Fighter2Id).FirstOrDefaultAsync().Result;
+
+                if (fight.Date != null)
+                {
+                    DateTime valDate1;
+                    DateTime valDate2;
+
+                    if (fighter1.Debut != null)
+                    {
+                        valDate1 = (DateTime)(fighter1.Debut);
+                    }
+                    else if (fighter1.DateOfBirth != null)
+                    {
+                        valDate1 = ((DateTime)(fighter1.DateOfBirth)).AddYears(18);
+                    }
+                    else
+                    {
+                        valDate1 = DateTime.Now;
+                    }
+
+                    if (fighter2.Debut != null)
+                    {
+                        valDate2 = (DateTime)(fighter2.Debut);
+                    }
+                    else if (fighter2.DateOfBirth != null)
+                    {
+                        valDate2 = ((DateTime)(fighter2.DateOfBirth)).AddYears(18);
+                    }
+                    else
+                    {
+                        valDate2 = DateTime.Now;
+                    }
+
+                    if (DateTime.Compare(valDate1, (DateTime)(fight.Date)) > 0 || DateTime.Compare(valDate2, (DateTime)(fight.Date)) > 0 || DateTime.Compare((DateTime)(fight.Date), DateTime.Now) > 0)
+                    {
+                        ModelState.AddModelError("Date", "Некоректна дата бою!");
+                        ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+                        ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
+                        return View(fight);
+                    }
+                }
+
+                if (_context.Fight.Where(f => ((f.Fighter1Id == fighter1.Id) || (f.Fighter2Id == fighter1.Id))&& ((f.Fighter1Id == fighter2.Id) || (f.Fighter2Id == fighter2.Id))&&(f.Date==fight.Date)  ).ToArray().Count() != 0)
+                {
+                    ModelState.AddModelError("Date", "Такий бій вже існує!");
+                    ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+                    ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
+                    return View(fight);
+                }
                 _context.Add(fight);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -119,6 +170,58 @@ namespace WebApplication2.Controllers
                         ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
                         return View(fight);
                     }
+
+                    var fighter1 = _context.Fighter.Where(f => f.Id == fight.Fighter1Id).FirstOrDefaultAsync().Result;
+                    var fighter2 = _context.Fighter.Where(f => f.Id == fight.Fighter2Id).FirstOrDefaultAsync().Result;
+
+                    if (fight.Date != null)
+                    {
+                        DateTime valDate1;
+                        DateTime valDate2;
+
+                        if (fighter1.Debut != null)
+                        {
+                            valDate1 = (DateTime)(fighter1.Debut);
+                        }
+                        else if (fighter1.DateOfBirth != null)
+                        {
+                            valDate1 = ((DateTime)(fighter1.DateOfBirth)).AddYears(18);
+                        }
+                        else
+                        {
+                            valDate1 = DateTime.Now;
+                        }
+
+                        if (fighter2.Debut != null)
+                        {
+                            valDate2 = (DateTime)(fighter2.Debut);
+                        }
+                        else if (fighter2.DateOfBirth != null)
+                        {
+                            valDate2 = ((DateTime)(fighter2.DateOfBirth)).AddYears(18);
+                        }
+                        else
+                        {
+                            valDate2 = DateTime.Now;
+                        }
+
+                        if (DateTime.Compare(valDate1, (DateTime)(fight.Date)) > 0 || DateTime.Compare(valDate2, (DateTime)(fight.Date)) > 0 || DateTime.Compare((DateTime)(fight.Date), DateTime.Now ) > 0)
+                        {
+                            ModelState.AddModelError("Date", "Некоректна дата бою!");
+                            ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+                            ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
+                            return View(fight);
+                        }
+                    }
+
+                    if (_context.Fight.Where(f => ((f.Fighter1Id == fighter1.Id) || (f.Fighter2Id == fighter1.Id)) && ((f.Fighter1Id == fighter2.Id) || (f.Fighter2Id == fighter2.Id)) && (f.Date == fight.Date)&&(f.Id!=fight.Id) ).ToArray().Count() != 0)
+                    {
+                        ModelState.AddModelError("Date", "Такий бій вже існує!");
+                        ViewData["Fighter1Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter1Id);
+                        ViewData["Fighter2Id"] = new SelectList(_context.Fighter, "Id", "Name", fight.Fighter2Id);
+                        return View(fight);
+                    }
+
                     _context.Update(fight);
                     await _context.SaveChangesAsync();
                 }

@@ -21,6 +21,7 @@ namespace WebApplication2.Controllers
         // GET: Countries
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Country.ToListAsync());
         }
 
@@ -139,6 +140,7 @@ namespace WebApplication2.Controllers
 
             var country = await _context.Country
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.FightersCount = _context.Fighter.Where(f => f.CountryId == id).ToArray().Count();
             if (country == null)
             {
                 return NotFound();

@@ -4,9 +4,9 @@
     ViewData["Title"] = "Видалити стаус";
 }
 
-<h1>Видалити статус</h1>
-
-<h3>Ви впевнені що  хочете видалити статус?</h3>
+<h1>Видалити статус @ViewBag.Status</h1>
+<hr />
+<h5>Ви впевнені що  хочете видалити статус? @if(@ViewBag.FightersCount!=0){<text>Буде видалено @ViewBag.FightersCount бійців</text>}</h5>
 <div>
     <hr />
     <dl class="row">
@@ -16,8 +16,14 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt class = "col-sm-2">
+            Бійців
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.FightersCount
+        </dd>
     </dl>
-   <p class="text-danger mb-2" style="font-size:14px; margin-top:-18px;">@Html.ValidationMessageFor(m => m.Name)</p>
+   <p class="text-danger mb-2" style="font-size:14px; margin-top:-8px;">@Html.ValidationMessageFor(m => m.Name)</p>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Видалити" class="btn btn-danger" />

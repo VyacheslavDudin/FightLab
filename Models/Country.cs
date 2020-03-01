@@ -15,7 +15,7 @@ namespace WebApplication2
         public int Id { get; set; }
 
         [Display(Name = "Країна")]
-        [StringLength(40, MinimumLength = 3, ErrorMessage = "Введіть від 3 до 40 символів")]
+        [StringLength(40, MinimumLength = 2, ErrorMessage = "Введіть від 2 до 40 символів")]
         [Required(ErrorMessage = "Поле не повинно бути порожнім!")]
         public string Name { get; set; }
 

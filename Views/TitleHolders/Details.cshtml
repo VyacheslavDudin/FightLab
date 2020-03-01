@@ -1,36 +1,52 @@
 ﻿@model WebApplication2.TitleHolders
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Інформація про титул";
 }
 
-<h1>Details</h1>
+<h1>Інформація про @ViewBag.TitleName</h1>
 
 <div>
-    <h4>TitleHolders</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfGettingTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfGettingTitle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fighter)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fighter.Name)
-        </dd>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title.Name)
         </dd>
+       
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fighter)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                @if(@Model.FighterId==null)
+                {
+                    <text>-</text>
+                }
+                else{@Html.DisplayFor(model => model.FighterId)}
+            }
+        </dd> 
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfGettingTitle)
+        </dt>
+        <dd class = "col-sm-10">
+             @{
+                @if(@Model.DateOfGettingTitle==null)
+                {
+                    <text>-</text>
+                }
+                else{@Html.DisplayFor(model => model.DateOfGettingTitle)}
+            }
+
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.TitleId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model.TitleId">Редагувати</a>
+    <a asp-action="Index" class="btn btn-outline-secondary ml-2 back">Назад</a>
 </div>
+
+<script>sessionStorage.setItem('url', window.location); </script>
