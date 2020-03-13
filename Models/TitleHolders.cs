@@ -7,7 +7,7 @@ namespace WebApplication2
     public partial class TitleHolders
     {
         [Display(Name = "Власник титулу")]
-        //[Required(ErrorMessage = "Поле не повинно бути порожнім!")]
+        
         public int? FighterId { get; set; }
         [Display(Name = "Титул")]
         [Required(ErrorMessage = "Поле не повинно бути порожнім!")]

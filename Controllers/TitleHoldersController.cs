@@ -75,8 +75,8 @@ namespace WebApplication2.Controllers
                 }
                
                 if(_context.Title.Where(t=>t.Name==title.Name).ToListAsync().Result.Count() != 0)
-                {
-                    ModelState.AddModelError("DateOfGettingTitle", "Титул з таким ім\'ям вже існує");
+                {//ERROR привязать помилку до спана, видалити титули
+                    ModelState.AddModelError("TitleName", "Титул з таким ім\'ям вже існує");
                     ViewData["FighterId"] = new SelectList(_context.Fighter, "Id", "Name", titleHolders.FighterId);
                     ViewData["TitleId"] = new SelectList(_context.Title, "Id", "Name", titleHolders.TitleId);
                     return View(titleHolders);
@@ -99,7 +99,7 @@ namespace WebApplication2.Controllers
                     {
                         valDate1 = DateTime.Now;
                     }
-                    if (DateTime.Compare(valDate1, (DateTime)(titleHolders.DateOfGettingTitle)) > 0)
+                    if (DateTime.Compare(valDate1, (DateTime)(titleHolders.DateOfGettingTitle)) > 0 || DateTime.Compare(DateTime.Now, (DateTime)(titleHolders.DateOfGettingTitle)) > 0)
                     {
                         ModelState.AddModelError("DateOfGettingTitle", "Перевірте коректність даних! Для цього бійця ця дата є некоректною");
                         ViewData["FighterId"] = new SelectList(_context.Fighter, "Id", "Name", titleHolders.FighterId);
@@ -171,7 +171,7 @@ namespace WebApplication2.Controllers
 
                     if (_context.Title.Where(t => t.Name == title.Name && t.Id != title.Id).ToListAsync().Result.Count() != 0)
                     {
-                        ModelState.AddModelError("DateOfGettingTitle", "Титул з таким ім\'ям вже існує");
+                        ModelState.AddModelError("TitleName", "Титул з таким ім\'ям вже існує");
                         ViewData["FighterId"] = new SelectList(_context.Fighter, "Id", "Name", titleHolders.FighterId);
                         ViewData["TitleId"] = new SelectList(_context.Title, "Id", "Name", titleHolders.TitleId);
                         return View(titleHolders);
@@ -195,7 +195,7 @@ namespace WebApplication2.Controllers
                             valDate1 = DateTime.Now;
                         }
 
-                        if (DateTime.Compare(valDate1, (DateTime)(titleHolders.DateOfGettingTitle)) > 0)
+                        if (DateTime.Compare(valDate1, (DateTime)(titleHolders.DateOfGettingTitle)) > 0 || DateTime.Compare(DateTime.Now, (DateTime)(titleHolders.DateOfGettingTitle)) > 0)
                         {
                             ModelState.AddModelError("DateOfGettingTitle", "Перевірте коректність даних! Для цього бійця ця дата є некоректною");
                             ViewData["FighterId"] = new SelectList(_context.Fighter, "Id", "Name", titleHolders.FighterId);
