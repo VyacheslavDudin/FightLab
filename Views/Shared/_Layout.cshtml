@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -40,6 +41,13 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="TitleHolders" asp-action="Index">Titles</a>
                         </li>
+                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Additional</a>
+                            <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, 40px, 0px); top: 0px; left: 0px; will-change: transform;">
+                              <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Diagram" >Diagrams</a>
+                              <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Report" >Report</a>
+                            </div>
+                         </li>
                     </ul>
                 </div>
             </div>

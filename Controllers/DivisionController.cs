@@ -14,6 +14,11 @@ using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using ValidateAntiForgeryTokenAttribute = Microsoft.AspNetCore.Mvc.ValidateAntiForgeryTokenAttribute;
 using BindAttribute = Microsoft.AspNetCore.Mvc.BindAttribute;
 using ActionNameAttribute = Microsoft.AspNetCore.Mvc.ActionNameAttribute;
+using ClosedXML;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using ClosedXML.Excel;
+using System.IO.Packaging;
 
 namespace WebApplication2.Controllers
 {
@@ -179,5 +184,8 @@ namespace WebApplication2.Controllers
         {
             return _context.Division.Any(e => e.Id == id);
         }
+
+     
+
     }
 }

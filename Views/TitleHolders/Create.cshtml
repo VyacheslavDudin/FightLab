@@ -13,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
              <div class="form-group">
                 <label asp-for="@Model.Title.Name" for='TitleName' class="control-label"></label>
-                <input asp-for="@Model.Title.Name" class="form-control" name="TitleName" id="TitleName" asp-route="TitleName" data-val="true" data-val-length="Введіть від 3 до 40 символів" data-val-length-max="40" data-val-length-min="3" data-val-required="Поле не повинно бути порожнім!" maxlength="40"/>
+                <input asp-for="@Model.Title.Name" class="form-control" value="@ViewBag.TitleName" name="TitleName" id="TitleName" asp-route="TitleName" data-val="true" data-val-length="Введіть від 3 до 40 символів" data-val-length-max="40" data-val-length-min="3" data-val-required="Поле не повинно бути порожнім!" maxlength="40"/>
                 <span asp-validation-for="@Model.Title.Name" class="text-danger"></span>
             </div>
             <div class="form-group">

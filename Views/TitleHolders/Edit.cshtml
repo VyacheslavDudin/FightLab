@@ -4,12 +4,12 @@
     ViewData["Title"] = "Редагувати титул";
 }
 
-<h1>Редагувати титул @ViewBag.TitleName</h1>
+<h1>Редагувати титул @ViewBag.ConstTitleName</h1>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="grid-create">
+        <form class="grid-form-3" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="@Model.Title.Name" for='TitleName' class="control-label"></label>

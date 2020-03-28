@@ -33,7 +33,49 @@ h1{
     font-size: 9px;
     letter-spacing: 0.5px;
     font-weight: 600;
-}   
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    font-weight: 700;
+    color: #fff6fe;
+    max-width: 80%;
+    font-size: 1rem;
+    white-space: nowrap;
+    background-color: #3e51d3;
+    border: none;
+    padding: .5rem 1rem;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.input-load {
+    font-weight: 600;
+    margin-bottom: 4px;
+    margin-left: 6px;
+    height: 40px;
+    background-color: #2d74bc
+}
+
+.filter-select{
+    width: 240px;
+    display:inline-block;
+}
+
+.filter-select-label{
+    display:inline-block;
+}
+
+
+
 
 .draw {
     position: absolute;
