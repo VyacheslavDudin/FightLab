@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Діаграми";
+}
+
+<h1>Діаграми</h1>
+<hr>
+
+<h3 class="text-center">Конструктор діаграм</h3>
+<p>
+    Ви можете створити діаграму будь-якого вигляду з запропонованих. Оберіть параметр: за якими даними буде побудована діаграма, та її вигляд, і все! Все так просто! Поексперементуйте з різними видами діаграм, та оберіть яка Вам найбільше до вподоби і найточніше зображує необхідну інформацію.
+</p>
+
+  <form id="chartForm" method="GET" style="position:relative">
+        <label class="control-label d-block" for="selectChartFor">Створити за:</label>
+        <select class="form-control valid filter-select" data-val="true" id="selectChartFor" name="selectChartFor" style="margin-right:5px;">
+            <option value="Division" selected>Division</option>
+            <option value="Country">Country</option>
+            <option value="Status">Status</option>
+        </select>
+
+        <label class="control-label d-block" for="selectChartFor" 
+            style="left: 250px;top: 0;position: absolute;">Вид діаграми:
+        </label>
+        <select class="form-control valid filter-select" data-val="true" id="selectChartType" name="selectChartType">
+            <option value="PieChart" selected>PieChart</option>
+            <option value="BarChart">BarChart</option>
+            <option value="LineChart">LineChart</option>
+            <option value="DonutChart">DonutChart</option>
+        </select>
+
+        <a  class="btn btn-primary input-load" id="chartFormSubmit">Створити</a>
+    </form>
+<hr>
+
+<div class="container">
+    <div id="chart1"></div>
+</div>
+
+@section scripts{
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        document.querySelector('#chartFormSubmit').addEventListener('click', ()=>{
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        let url = "/api/Charts/JsonData?param=";
+        let chartFor= document.querySelector('#selectChartFor').value;
+        let str;
+        let chartType=document.querySelector('#selectChartType').value;
+        switch(chartFor)
+        {
+            case 'Division':
+                {
+                    url+=chartFor;
+                    str="вагових категорій";
+                    break;
+                }
+            case 'Country':
+                {
+                    url+=chartFor;
+                    str="країн";
+                    break;
+                }
+            case 'Status':
+                {
+                    url+=chartFor;
+                    str="статусів";
+                    break;
+                }
+            default: {url+=chartFor;
+                    str="вагових категорій";
+                    break;}
+        }
+        $.get(url, function(jsonData){
+            var data=google.visualization.arrayToDataTable(jsonData, false);
+            var options = {'title':`Співвідношення к-сті бійців та ${str}`,
+                                   'width':400,
+                                   'height':300,
+                                   'margin':"0 auto",
+                                   'fill':"#FFF",
+                                   'fill-color':"#FFF"};
+            switch(chartType)
+            {
+                case 'PieChart':
+                    {
+                        var chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                        chart.draw(data, options);
+                        break;
+                    }
+                case 'BarChart':
+                    {
+                        var chart = new google.visualization.BarChart(document.getElementById('chart1'));
+                        chart.draw(data, options);
+                        break;
+                    }
+                case 'LineChart':
+                    {
+                        var chart = new google.visualization.LineChart(document.getElementById('chart1'));
+                        chart.draw(data, options);
+                        break;
+                    }
+                case 'DonutChart':
+                    {
+                        var chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                        let options2={...options,  pieHole: 0.4,}
+                        chart.draw(data, options2);
+                        break;
+                    }
+                default:{
+                    var chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                        chart.draw(data, options);
+                        break;
+                }
+            }
+        });
+        
+      }
+      });
+    </script>
+}
