@@ -42,6 +42,10 @@
               "target": "Package",
               "version": "[0.95.0-beta2, )"
             },
+            "DocX": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
             "Microsoft.AspNet.Mvc": {
               "target": "Package",
               "version": "[5.2.7, )"
@@ -64,9 +68,21 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Microsoft.Office.Interop.Word": {
+              "target": "Package",
+              "version": "[15.0.4797.1003, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.1, )"
+            },
+            "Spire.DataExport": {
+              "target": "Package",
+              "version": "[3.5.10, )"
+            },
+            "Spire.Doc": {
+              "target": "Package",
+              "version": "[8.3.15, )"
             }
           },
           "imports": [

@@ -20,32 +20,60 @@ namespace WebApplication2.Controllers
 
         [HttpGet("JsonData")]
 
-        public JsonResult JsonData()
+        public JsonResult JsonData(string param)
         {
-            var division = _context.Division.ToList();
-            List<object> divisFighters = new List<object>();
-            divisFighters.Add(new[] { "Вагова категорія", "К-сть бійців" });
-
-            foreach(var d in division)
+            switch (param)
             {
-                divisFighters.Add(new object[] { d.Name, _context.Fighter.Where(f=>f.DivisionId==d.Id).ToList().Count() });
+                case "Division":
+                    {
+                        var division = _context.Division.ToList();
+                        List<object> divisFighters = new List<object>();
+                        divisFighters.Add(new[] { "Вагова категорія", "К-сть бійців" });
+
+                        foreach (var d in division)
+                        {
+                            divisFighters.Add(new object[] { d.Name, _context.Fighter.Where(f => f.DivisionId == d.Id).ToList().Count() });
+                        }
+                        return new JsonResult(divisFighters);
+                    }
+                case "Country":
+                    {
+                        var country = _context.Country.ToList();
+                        List<object> countrFighters = new List<object>();
+                        countrFighters.Add(new[] { "Країна", "К-сть бійців" });
+
+                        foreach (var c in country)
+                        {
+                            countrFighters.Add(new object[] { c.Name, _context.Fighter.Where(f => f.CountryId == c.Id).ToList().Count() });
+                        }
+                        return new JsonResult(countrFighters);
+                    }
+                case "Status":
+                    {
+                        var status = _context.Status.ToList();
+                        List<object> statFighters = new List<object>();
+                        statFighters.Add(new[] { "Статус", "К-сть бійців" });
+
+                        foreach (var s in status)
+                        {
+                            statFighters.Add(new object[] { s.Name, _context.Fighter.Where(f => f.StatusId == s.Id).ToList().Count() });
+                        }
+                        return new JsonResult(statFighters);
+                    }
+                default:
+                    {
+                        var division = _context.Division.ToList();
+                        List<object> divisFighters = new List<object>();
+                        divisFighters.Add(new[] { "Вагова категорія", "К-сть бійців" });
+
+                        foreach (var d in division)
+                        {
+                            divisFighters.Add(new object[] { d.Name, _context.Fighter.Where(f => f.DivisionId == d.Id).ToList().Count() });
+                        }
+                        return new JsonResult(divisFighters);
+                    }
             }
-            return new JsonResult(divisFighters);
-        }
-
-        [HttpGet("JsonData2")]
-
-        public JsonResult JsonData2()
-        {
-            var countries = _context.Country.ToList();
-            List<object> countryFighters = new List<object>();
-            countryFighters.Add(new[] { "Країна", "К-сть бійців" });
-
-            foreach (var c in countries)
-            {
-                countryFighters.Add(new object[] { c.Name, _context.Fighter.Where(f => f.CountryId == c.Id).ToList().Count() });
-            }
-            return new JsonResult(countryFighters);
+            
         }
     }
 }

@@ -13,9 +13,9 @@
     <div>
         <h3 style="margin-bottom:18px">Завантажити інформацію зі звіту</h3>
         <p>
-            Ви можете завантажити Excell-файл відповідного xslx формату, який буде заповнений відповідною інформацією про них, і після натискання кнопки "Завантажити", цю інформацію буде додано до бази. Уважно перевірте інформацію у файлі 
+            Ви можете завантажити Excell-файл відповідного xslx формату, або Word-файл відповідного docx формату який буде заповнений відповідною інформацією про бійців, і&nbsp;після натискання кнопки "Завантажити", цю інформацію буде додано до бази. Уважно перевіряйте коректність інформації у&nbsp;файлі та&nbsp;відповідність структури файлу шаблонам. 
         </p>
-        <input type="file" name="fileExcell" id="fileExcell" class="inputfile"  data-multiple-caption="{count} files selected"/>
+        <input type="file" name="fileForm" id="fileExcell" class="inputfile"  data-multiple-caption="{count} files selected"/>
         <label for="fileExcell">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17" fill="#fff6fe">
 						<path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
@@ -23,7 +23,7 @@
             <span>Оберіть файл..</span>
         </label>
         <div style="display:inline-block">
-            <input type="submit" value="Завантажити" class="btn btn-primary input-load"/>
+            <input type="submit" value="Завантажити" class="btn btn-primary input-load" id="inp-load" disabled/>
         </div>
     </div>
 }
@@ -32,7 +32,7 @@
 <div>
     <h3>Завантаження інформації в файл</h3>
     <p>
-            Ви можете завантажити собі на пристрій Excell-файл, який буде сформований на основі бійців у базі, та заповнений відповідною інформацією про них. Бійці будуть відсортовані по аркушам за обраним Вами фільтром.
+            Ви можете завантажити на Ваш пристрій Excell-файл або Word-файл, який буде сформований на основі бійців у базі, та заповнений відповідною інформацією про них. Бійці будуть відсортовані по аркушам/параграфам за обраним Вами фільтром.
     </p>
 
     @using(Html.BeginForm("Export","Home", FormMethod.Post, new{enctype="multipart/form-data", id="download-form"}))
@@ -44,11 +44,18 @@
             <option value="Country">Country</option>
             <option value="Status">Status</option>
         </select>
-        <a  class="btn btn-primary input-load" onclick="document.querySelector('#download-form').submit()">
+        <a  class="btn btn-primary input-load" id="submit-xlsx" >
             <svg viewBox="0 0 10 10" fill="#fff6fe" style="height:20px">
                 <path d="m5 9-3-4h2v-4h2v4h2z"/>
             </svg>
-            Завантажити собі
+            Завантажити .xlsx
+        </a>
+
+        <a  class="btn btn-primary input-load" id="submit-doc">
+            <svg viewBox="0 0 10 10" fill="#fff6fe" style="height:20px">
+                <path d="m5 9-3-4h2v-4h2v4h2z"/>
+            </svg>
+            Завантажити .doc
         </a>
     }
 </div>
@@ -57,17 +64,55 @@
     let fileInput=document.querySelector('.inputfile');
     let label = fileInput.nextElementSibling;
     let labelVal = label.innerHTML;
+    let uploadForm=document.querySelector("#frm-excell");
+    let inpload = document.querySelector('#inp-load');
+    let downloadForm= document.querySelector("#download-form");
+    let subXlsx = document.querySelector("#submit-xlsx");
+    let subDoc = document.querySelector("#submit-doc");
+    let baseActionExport = "https://localhost:5001/Home/Export";
+    let baseActionImport = "https://localhost:5001/Home/Import";
+
+    subDoc.addEventListener('click', ()=>{
+        downloadForm.action=baseActionExport+"Doc";
+        downloadForm.submit();
+    });
+
+    subXlsx.addEventListener('click', ()=>{
+        downloadForm.action=baseActionExport;
+        downloadForm.submit();
+    });
 
     fileInput.addEventListener('change', function(e){
     let fileName = '';
-    if( this.files && this.files.length > 1 )
+    if( this.files && this.files.length > 1 ){
       fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-    else
+      
+      }
+    else{
       fileName = e.target.value.split( '\\' ).pop();
-		if( fileName )
-      label.querySelector( 'span' ).innerHTML = fileName;
-    else
-      label.innerHTML = labelVal;
+      inpload.disabled=false;
+      }
+		if( fileName){
+            label.querySelector( 'span' ).innerHTML = fileName;
+            inpload.disabled=false;
+        }
+        else{
+            label.innerHTML = labelVal;
+            inpload.disabled=true;
+        }
+        if(fileName.substr(-4)=="docx"){
+            inpload.disabled=false;
+            uploadForm.action=baseActionImport+"Doc";
+        }
+        else if(fileName.substr(-4)=="xlsx"){
+            inpload.disabled=false;
+            uploadForm.action=baseActionImport;
+        }
+        else{
+            inpload.disabled=true;
+        }
+
+
 	});
 
 </script>

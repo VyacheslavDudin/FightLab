@@ -134,8 +134,13 @@ g[clip-path] > g rect{
     font-size:18px;
     width: 90px;
 }
-/*-------------------------------------------------- */
 
+.btn-primary.disabled, .btn-primary:disabled, .btn-primary:disabled:hover {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+/*-------------------------------------------------- */
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
