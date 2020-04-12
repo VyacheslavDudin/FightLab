@@ -9,6 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using WebApplication2.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplication2
 {
@@ -22,11 +26,19 @@ namespace WebApplication2
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<FightContext>(options => options.UseSqlServer(connection));
             services.AddControllersWithViews();
+
+            string connectionIdentity = Configuration.GetConnectionString("IdentityConnection");
+            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionIdentity));
+            services.AddControllersWithViews();
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +59,7 @@ namespace WebApplication2
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

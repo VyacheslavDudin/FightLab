@@ -50,9 +50,17 @@
               "target": "Package",
               "version": "[5.2.7, )"
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0-preview.2.20167.3, )"
+            },
+            "Microsoft.Bcl.AsyncInterfaces": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[5.0.0-preview.2.20120.8, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer.Design": {
               "target": "Package",
@@ -66,7 +74,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[5.0.0-preview.2.20120.8, )"
             },
             "Microsoft.Office.Interop.Word": {
               "target": "Package",
